@@ -52,9 +52,11 @@ public class BooksController {
     public String addNewBook(@ModelAttribute("book") @Valid Book book,
                              BindingResult bindingResult)
     {
-        bookValidator.validate(book, bindingResult);
         if (bindingResult.hasErrors())
             return "books/new";
+//        bookValidator.validate(book, bindingResult);
+//        if (bindingResult.hasGlobalErrors())
+//            return "books/new";
         bookDAO.save(book);
         return "redirect:/books";
     }

@@ -8,10 +8,10 @@ import javax.validation.constraints.Pattern;
 public class Book {
 
     private int bookId;
-    @NotEmpty(message = "Поле \"Название книги\" не должен быть пустым")
-    private String name;
+    @NotEmpty(message = "Поле \"Название книги\" не должно быть пустым")
+    private String title;
     //@Pattern(regexp = "[А-Я]+ [А-Я]+]", message = "Формат ввода автора \"Имя Фамилия\"")
-    @NotEmpty(message = "Поле \"Автор\" не должен быть пустым")
+    @NotEmpty(message = "Поле \"Автор\" не должно быть пустым")
     private String author;
     @Min(value = 0, message = "Поле \"Год публикации\" не должно быть отрицательным")
     @Max(value = 2022, message = "Поле \"Год публикации\" не должно больше, чем 2022")
@@ -20,9 +20,9 @@ public class Book {
     public Book() {
     }
 
-    public Book(int bookId, String name, String author, int yearOfPublication) {
+    public Book(int bookId, String title, String author, int yearOfPublication) {
         this.bookId = bookId;
-        this.name = name;
+        this.title = title;
         this.author = author;
         this.yearOfPublication = yearOfPublication;
     }
@@ -35,12 +35,12 @@ public class Book {
         this.bookId = bookId;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getAuthor() {
