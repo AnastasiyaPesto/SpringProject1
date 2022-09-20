@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.zentsova.springcourse.models.Book;
+import ru.zentsova.springcourse.models.Person;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,10 +45,15 @@ public class BookDAO {
 
     public void update(int id, Book book) {
         jdbcTemplate.update("UPDATE Book SET title=?, author=?, year_of_publication=? WHERE book_id=?",
-                        book.getTitle(), book.getAuthor(), book.getYearOfPublication(), id);
+                        book.getTitle().trim(), book.getAuthor().trim(), book.getYearOfPublication(), id);
     }
 
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM Book WHERE book_id=?", id);
     }
+
+    public void assign(int id, Person person) {
+        jdbcTemplate.update("UPDATE Book SET person_id=? WHERE book_id=?", person.getPersonId(), id);
+    }
+
 }

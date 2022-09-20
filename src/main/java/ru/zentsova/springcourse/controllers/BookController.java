@@ -6,21 +6,25 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.zentsova.springcourse.dao.BookDAO;
+import ru.zentsova.springcourse.dao.PersonDAO;
 import ru.zentsova.springcourse.models.Book;
+import ru.zentsova.springcourse.models.Person;
 import ru.zentsova.springcourse.utils.BookValidator;
 
 import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/books")
-public class BooksController {
+public class BookController {
 
     private final BookDAO bookDAO;
+    private final PersonDAO personDAO;
     private final BookValidator bookValidator;
 
     @Autowired
-    public BooksController(BookDAO bookDAO, BookValidator bookValidator) {
+    public BookController(BookDAO bookDAO, PersonDAO personDAO, BookValidator bookValidator) {
         this.bookDAO = bookDAO;
+        this.personDAO = personDAO;
         this.bookValidator = bookValidator;
     }
 
@@ -31,8 +35,9 @@ public class BooksController {
     }
 
     @GetMapping("{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
         model.addAttribute("book", bookDAO.findById(id));
+        model.addAttribute("people", personDAO.getAll());
         return "books/show";
     }
 
@@ -52,11 +57,10 @@ public class BooksController {
     public String addNewBook(@ModelAttribute("book") @Valid Book book,
                              BindingResult bindingResult)
     {
-        if (bindingResult.hasErrors())
+        bookValidator.validate(book, bindingResult);
+        if (bindingResult.hasErrors()) {
             return "books/new";
-//        bookValidator.validate(book, bindingResult);
-//        if (bindingResult.hasGlobalErrors())
-//            return "books/new";
+        }
         bookDAO.save(book);
         return "redirect:/books";
     }
@@ -66,7 +70,7 @@ public class BooksController {
                          BindingResult bindingResult,
                          @PathVariable("id") int id)
     {
-//        bookValidator.validate(person, bindingResult);
+        bookValidator.validate(book, bindingResult);
         if (bindingResult.hasErrors())
             return "books/edit";
         bookDAO.update(id, book);
@@ -78,4 +82,11 @@ public class BooksController {
         bookDAO.delete(id);
         return "redirect:/books";
     }
+
+    @PatchMapping("/{id}/assign")
+    public String assign(@PathVariable("id") int id, @ModelAttribute("person") Person person) {
+        bookDAO.assign(id, person);
+        return "redirect:/books/" + id;
+    }
+
 }

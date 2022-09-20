@@ -18,7 +18,6 @@
     <input type="text" th:field="*{yearOfPublication}" id="yearOfPublication">
     <div style="color:red" th:if="${#fields.hasErrors('yearOfPublication')}" th:errors="*{yearOfPublication}">YearOfPublication error</div>
     <br/>
-<!--    <p style="color:red" th:if="${#fields.hasGlobalErrors()}" th:errors="*{global}">A duplicate is exist</p>-->
     <input type="submit" value="Добавить">
 </form>
 

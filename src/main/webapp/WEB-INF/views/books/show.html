@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Страница книги</title>
@@ -7,6 +7,17 @@
 <body>
     <h3 th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYearOfPublication()}">Текст</h3>
     <br/>
+    <div th:if="${people}">
+        <label>Эта книга свободна. Кому её назначить?</label>
+        <br/>
+        <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getBookId()})}">
+            <label for="person">Выберите человека</label>
+            <select th:object="${person}" th:field="*{personId}" id="person">
+                <option th:each="person : ${people}" th:value="${person.getPersonId()}" th:text="${person.getFio()}"></option>
+            </select>
+            <input type="submit" value="Назначить книгу">
+        </form>
+    </div>
     <hr/>
     <form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getBookId()})}">
         <input type="submit" value="Редактировать">
