@@ -26,8 +26,8 @@ public class PersonValidator implements Validator {
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
 
-        if (personDAO.findByFio(person.getFio().trim()).isPresent())
-            errors.rejectValue("fio", "", "Такой человек уже существует");
+        if (personDAO.findByFullname(person.getFullName().trim()).isPresent())
+            errors.rejectValue("fullName", "", "Такой человек уже существует");
     }
 
 }

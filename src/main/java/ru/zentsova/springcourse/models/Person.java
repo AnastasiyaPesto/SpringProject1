@@ -8,7 +8,7 @@ public class Person {
 
     private int personId;
     @NotEmpty(message = "Поле \"ФИО\" не должно быть пустым")
-    private String fio;
+    private String fullName;
     @Min(value = 1900, message = "Год рождения не может быть меньше 1900")
     @Max(value = 2012, message = "Минимальный возраст пользователя должен быть больше или равно 10 лет")
     private int yearOfBorn;
@@ -16,9 +16,9 @@ public class Person {
     public Person() {
     }
 
-    public Person(int personId, String fio, int yearOfBorn) {
+    public Person(int personId, String fullName, int yearOfBorn) {
         this.personId = personId;
-        this.fio = fio;
+        this.fullName = fullName;
         this.yearOfBorn = yearOfBorn;
     }
 
@@ -30,12 +30,12 @@ public class Person {
         this.personId = personId;
     }
 
-    public String getFio() {
-        return fio;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFio(String fio) {
-        this.fio = fio;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public int getYearOfBorn() {

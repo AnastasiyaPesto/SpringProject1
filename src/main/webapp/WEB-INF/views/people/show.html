@@ -5,14 +5,24 @@
     <title>Страница человека</title>
 </head>
 <body>
-<h3 th:text="${person.getFio() + ', ' + person.getYearOfBorn()}">Текст</h3>
-<br/>
-<hr/>
-<form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getPersonId()})}">
-    <input type="submit" value="Редактировать">
-</form>
-<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPersonId()})}">
-    <input type="submit" value="Удалить">
-</form>
+    <h3 th:text="${person.getFullName() + ', ' + person.getYearOfBorn()}">Текст</h3>
+    <div th:if="${!books.isEmpty()}">
+        <hr/>
+        <h3>Книги:</h3>
+        <ul th:each="book : ${books}">
+           <li th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYearOfPublication()}"></li>
+        </ul>
+    </div>
+    <div th:if="${books.isEmpty()}">
+        <label>Человек пока не взял ни одной книги</label>
+    </div>
+    <hr/>
+
+    <form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getPersonId()})}">
+        <input type="submit" value="Редактировать">
+    </form>
+    <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getPersonId()})}">
+        <input type="submit" value="Удалить">
+    </form>
 </body>
 </html>

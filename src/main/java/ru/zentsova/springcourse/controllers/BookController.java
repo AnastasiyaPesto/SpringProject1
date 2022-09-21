@@ -12,6 +12,7 @@ import ru.zentsova.springcourse.models.Person;
 import ru.zentsova.springcourse.utils.BookValidator;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/books")
@@ -37,7 +38,11 @@ public class BookController {
     @GetMapping("{id}")
     public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
         model.addAttribute("book", bookDAO.findById(id));
-        model.addAttribute("people", personDAO.getAll());
+        Optional<Person> owner = bookDAO.getOwner(id);
+        if (owner.isPresent())
+            model.addAttribute("owner", owner.get());
+        else
+            model.addAttribute("people", personDAO.getAll());
         return "books/show";
     }
 
@@ -86,6 +91,12 @@ public class BookController {
     @PatchMapping("/{id}/assign")
     public String assign(@PathVariable("id") int id, @ModelAttribute("person") Person person) {
         bookDAO.assign(id, person);
+        return "redirect:/books/" + id;
+    }
+
+    @PatchMapping("/{id}/release")
+    public String release(@PathVariable("id") int id) {
+        bookDAO.release(id);
         return "redirect:/books/" + id;
     }
 
