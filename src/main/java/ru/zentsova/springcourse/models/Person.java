@@ -3,6 +3,7 @@ package ru.zentsova.springcourse.models;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import java.util.Objects;
 
 public class Person {
 
@@ -44,6 +45,19 @@ public class Person {
 
     public void setYearOfBorn(int yearOfBorn) {
         this.yearOfBorn = yearOfBorn;
+    }
+
+    @Override
+    public boolean equals(Object otherObject) {
+        if (this == otherObject) return true;
+
+        if (otherObject == null) return false;
+
+        if (getClass() != otherObject.getClass()) return false;
+
+        Person other = (Person) otherObject;
+
+        return Objects.equals(fullName, other.fullName);
     }
 
 }
