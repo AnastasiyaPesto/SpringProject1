@@ -57,17 +57,13 @@ public class BookDAO {
     }
 
     public Optional<Person> getOwner(int bookId) {
-        return jdbcTemplate.query("SELECT p.person_id, p.full_name, p.year_of_born FROM Person p " +
+        return jdbcTemplate.query("SELECT p.* FROM Person p " +
                 "JOIN Book b ON p.person_id = b.person_id " +
                 "WHERE b.book_id=?", new Object[]{bookId}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny();
     }
 
     public void release(int bookId) {
         jdbcTemplate.update("UPDATE Book SET person_id=null WHERE book_id=?", bookId);
-    }
-
-    public List<Book> getAllBooksByPersonId(int personId) {
-        return jdbcTemplate.query("SELECT * FROM Book WHERE person_id=?", new Object[]{personId}, new BeanPropertyRowMapper<>(Book.class));
     }
 
 }

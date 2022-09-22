@@ -28,13 +28,8 @@ public class PersonValidator implements Validator {
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
 
-        Optional<Person> personFromDB = personDAO.findByFullname(person.getFullName().trim());
-        if (personFromDB.isPresent()) {
-            Person foundedPerson = personFromDB.get();
-            if (person.equals(foundedPerson))
+        if (personDAO.findByFullname(person.getFullName().trim()).isPresent()) {
                 errors.rejectValue("fullName", "", "Такой человек уже существует");
-                //&& (person.getPersonId() == 0 || person.getPersonId() != foundedPerson.getPersonId()))
-
         }
     }
 
