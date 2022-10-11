@@ -1,34 +1,47 @@
 package ru.zentsova.springcourse.models;
 
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import java.util.Objects;
+import java.util.List;
 
+@Entity
+@Table(name = "Person")
 public class Person {
 
-    private int personId;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @NotEmpty(message = "Поле \"ФИО\" не должно быть пустым")
+    @Column(name = "full_name", unique = true)
     private String fullName;
+
     @Min(value = 1900, message = "Год рождения не может быть меньше 1900")
     @Max(value = 2012, message = "Минимальный возраст пользователя должен быть больше или равно 10 лет")
-    private int yearOfBorn;
+    @Column(name = "year_of_birth")
+    private int yearOfBirth;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST)
+    private List<Book> books;
 
     public Person() {
     }
 
-    public Person(int personId, String fullName, int yearOfBorn) {
-        this.personId = personId;
+    public Person(int id, String fullName, int yearOfBirth) {
+        this.id = id;
         this.fullName = fullName;
-        this.yearOfBorn = yearOfBorn;
+        this.yearOfBirth = yearOfBirth;
     }
 
-    public int getPersonId() {
-        return personId;
+    public int getId() {
+        return id;
     }
 
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFullName() {
@@ -39,25 +52,19 @@ public class Person {
         this.fullName = fullName;
     }
 
-    public int getYearOfBorn() {
-        return yearOfBorn;
+    public int getYearOfBirth() {
+        return yearOfBirth;
     }
 
-    public void setYearOfBorn(int yearOfBorn) {
-        this.yearOfBorn = yearOfBorn;
+    public void setYearOfBirth(int yearOfBorn) {
+        this.yearOfBirth = yearOfBorn;
     }
 
-    @Override
-    public boolean equals(Object otherObject) {
-        if (this == otherObject) return true;
-
-        if (otherObject == null) return false;
-
-        if (getClass() != otherObject.getClass()) return false;
-
-        Person other = (Person) otherObject;
-
-        return Objects.equals(fullName, other.fullName);
+    public List<Book> getBooks() {
+        return books;
     }
 
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
 }
