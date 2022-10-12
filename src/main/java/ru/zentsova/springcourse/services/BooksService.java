@@ -84,17 +84,19 @@ public class BooksService {
     @Transactional
     public void assign(int id, Person owner) {
         Optional<Book> foundBook = booksRepository.findById(id);
-        if (foundBook.isPresent()) {
-            Book book = foundBook.get();
+        foundBook.ifPresent(book -> {
             book.setOwner(owner);
             book.setTimeTaken(new Date());
-        }
+        });
     }
 
     @Transactional
     public void release(int id) {
-        Optional<Book> book = booksRepository.findById(id);
-        book.ifPresent(value -> value.setOwner(null));
+        Optional<Book> foundBook = booksRepository.findById(id);
+        foundBook.ifPresent(book -> {
+            book.setOwner(null);
+            book.setTimeTaken(null);
+        });
     }
 
 }

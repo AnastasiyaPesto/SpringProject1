@@ -10,7 +10,7 @@
         <hr/>
         <h3>Книги:</h3>
         <ul th:each="book : ${books}">
-           <li th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYearOfPublication()}"></li>
+           <li th:style="${book.getIsExpired() ? 'color:red' : _}" th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYearOfPublication()}"></li>
         </ul>
     </div>
     <div th:if="${books.isEmpty()}">

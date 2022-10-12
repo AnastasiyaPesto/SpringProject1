@@ -8,10 +8,9 @@ import ru.zentsova.springcourse.models.Book;
 import ru.zentsova.springcourse.models.Person;
 import ru.zentsova.springcourse.repositories.PeopleRepository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -48,15 +47,23 @@ public class PeopleService {
         peopleRepository.deleteById(id);
     }
 
+    public Optional<Person> getPersonByFullName(String fullName) {
+        return peopleRepository.findByFullName(fullName);
+    }
+
     public List<Book> getBooksByPersonId(int id) {
-        List<Book> books = new ArrayList<>();
         Optional<Person> person = peopleRepository.findById(id);
         if (person.isPresent()) {
             Hibernate.initialize(person.get().getBooks());
-            books.addAll(person.get().getBooks());
-            books.forEach(value -> value.setIsExpired(value.getTimeTaken().before(new Date())));
+            person.get().getBooks().forEach(book -> {
+                Date nowMinusTenDays = Date.from(Instant.now().minus(Duration.ofDays(10)));
+                book.setIsExpired(book.getTimeTaken().before(nowMinusTenDays));
+            });
+            return person.get().getBooks();
+        } else {
+            return Collections.emptyList();
         }
-        return books;
+
     }
 
 }

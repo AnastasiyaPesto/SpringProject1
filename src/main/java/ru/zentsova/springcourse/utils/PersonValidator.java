@@ -4,17 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.zentsova.springcourse.dao.PersonDAO;
 import ru.zentsova.springcourse.models.Person;
+import ru.zentsova.springcourse.services.PeopleService;
+
+import java.util.Optional;
 
 @Component
 public class PersonValidator implements Validator {
 
-    private final PersonDAO personDAO;
+    private final PeopleService peopleService;
 
     @Autowired
-    public PersonValidator(PersonDAO personDAO) {
-        this.personDAO = personDAO;
+    public PersonValidator(PeopleService peopleService) {
+        this.peopleService = peopleService;
     }
 
     @Override
@@ -26,9 +28,9 @@ public class PersonValidator implements Validator {
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
 
-//        Optional<Person> personFromDB = personDAO.findByFullname(person.getFullName().trim());
-//        if (personFromDB.isPresent() && person.getId() != personFromDB.get().getId())
-//            errors.rejectValue("fullName", "", "Такой человек уже существует");
+        Optional<Person> personFromDB = peopleService.getPersonByFullName(person.getFullName().trim());
+        if (personFromDB.isPresent() && person.getId() != personFromDB.get().getId())
+            errors.rejectValue("fullName", "", "Такой человек уже существует");
     }
 
 }
