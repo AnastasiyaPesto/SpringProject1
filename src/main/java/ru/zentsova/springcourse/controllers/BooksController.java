@@ -101,12 +101,12 @@ public class BooksController {
     }
 
     @GetMapping(value = "/search")
-    public String search() {
+    public String searchPage() {
         return "books/search";
     }
 
     @PostMapping(value = "/search")
-    public String resetPassword(@RequestParam(value = "title", required = false) String title, Model model) {
+    public String searchBook(@RequestParam(value = "title", required = false) String title, Model model) {
         model.addAttribute("books", booksService.findByTitleStartingWith(title));
         return "books/search";
     }

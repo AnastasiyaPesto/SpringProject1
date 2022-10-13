@@ -7,7 +7,7 @@
 <body>
 
     <form th:method="PATCH" th:action="@{/people/{id}(id=${person.getId()})}" th:object="${person}">
-        <input type="hidden" th:field="*{id}">
+<!--        <input type="hidden" th:field="*{id}">-->
         <label for="fullName">Введите ФИО:</label>
         <input type="text" th:field="*{fullName}" id="fullName">
         <div style="color:red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">FullName error</div>

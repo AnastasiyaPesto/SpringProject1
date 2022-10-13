@@ -72,7 +72,12 @@ public class BooksService {
 
     @Transactional
     public void update(int idBookToUpdate, Book updatedBook) {
+        Book bookToBeUpdated = booksRepository.findById(idBookToUpdate).get();
+
+        // добавляем по сути новую книгу, которая не находится в Persistence context, поэтому нужен save
         updatedBook.setId(idBookToUpdate);
+        updatedBook.setOwner(bookToBeUpdated.getOwner()); // чтобы не терялась связь при обновлении
+
         booksRepository.save(updatedBook);
     }
 
